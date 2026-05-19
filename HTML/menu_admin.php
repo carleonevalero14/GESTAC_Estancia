@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../recursos/css/base.css">
     <link rel="stylesheet" href="../recursos/css/componentes.css">
     <link rel="stylesheet" href="../recursos/css/menu.css">
+    <link rel="stylesheet" href="../recursos/css/metricas.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 
@@ -42,26 +43,8 @@
         <div class="panel-izquierdo">
             <h1 id="GESTAC">GESTAC</h1>
             <div class="contenedor-dona">
-                <canvas id="chartCategorias"></canvas>
-                <div id="counterDash" class="tablero-contadores">
-                    <div class="tarjeta-contador">
-                        <span class="numero-contador" id="cntActivos">0</span>
-                        <span class="etiqueta-contador">Activos</span>
-                    </div>
-                    <div class="tarjeta-contador">
-                        <span class="numero-contador" id="cntUsuarios">0</span>
-                        <span class="etiqueta-contador">Usuarios</span>
-                    </div>
-                    <div class="tarjeta-contador">
-                        <span class="numero-contador" id="cntPrestamos">0</span>
-                        <span class="etiqueta-contador">Préstamos</span>
-                    </div>
-                </div>
-            </div>
-            <div class="nav-tablero">
-                <button class="flecha-tablero" id="dashPrev">&#8249;</button>
-                <p class="etiqueta-dona" id="dashLabel">ACTIVOS POR CATEGORÍA</p>
-                <button class="flecha-tablero" id="dashNext">&#8250;</button>
+                <canvas id="chartCategorias" width="180" height="180"></canvas>
+                <p class="etiqueta-dona">ACTIVOS POR CATEGORÍA</p>
             </div>
         </div>
 
@@ -105,6 +88,46 @@
     </div>
 
     <!-- ================= CONFIGURACIONES ================= -->
+    <!-- Botón de métricas -->
+    <button id="btnMetricas">📊 Métricas</button>
+
+    <!-- Overlay y panel lateral de métricas -->
+    <div id="overlayMetricas"></div>
+    <div id="panelMetricas">
+        <div class="panel-metricas-header">
+            <h2>📊 Métricas del Sistema</h2>
+            <button id="cerrarMetricas">✕</button>
+        </div>
+        <div class="panel-metricas-cuerpo">
+            <!-- KPIs -->
+            <div class="kpi-grid" id="kpiGrid"></div>
+
+            <!-- Gráfica 1: Asignados vs Disponibles -->
+            <div class="seccion-grafica">
+                <h3>Asignados vs Disponibles</h3>
+                <canvas id="chartDona"></canvas>
+            </div>
+
+            <!-- Gráfica 2: Activos por categoría -->
+            <div class="seccion-grafica">
+                <h3>Activos por Categoría</h3>
+                <canvas id="chartCategoria"></canvas>
+            </div>
+
+            <!-- Gráfica 3: Top ubicaciones -->
+            <div class="seccion-grafica">
+                <h3>Top Ubicaciones</h3>
+                <canvas id="chartUbicacion"></canvas>
+            </div>
+
+            <!-- Gráfica 4: Tendencia por mes -->
+            <div class="seccion-grafica">
+                <h3>Asignaciones por Mes</h3>
+                <canvas id="chartMes"></canvas>
+            </div>
+        </div>
+    </div>
+
     <a href="#" class="icono-config" id="configIcon" title="Configuraciones">⚙️</a>
     <div class="menu-config" id="configMenu">
         <div class="tiene-submenu">
@@ -276,8 +299,9 @@
         </div>
     </div>
 
-    <script src="../recursos/js/peticiones.js"></script>
-    <script src="../recursos/js/utilidades.js"></script>
-    <script src="../recursos/js/menu.js"></script>
+    <script src="../recursos/js/peticiones.js?v=2"></script>
+    <script src="../recursos/js/utilidades.js?v=2"></script>
+    <script src="../recursos/js/menu.js?v=2"></script>
+    <script src="../recursos/js/metricas.js?v=2"></script>
 </body>
 </html>

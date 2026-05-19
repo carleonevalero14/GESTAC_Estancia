@@ -1,4 +1,3 @@
-/* ── Paleta de verdes para gráficas ── */
 const VERDES = ['#4CAF50', '#81C784', '#2b5a2b', '#a5d6a7', '#388E3C', '#66BB6A'];
 
 /* ===================== MENÚ DE CONFIGURACIÓN ===================== */
@@ -334,38 +333,16 @@ function cargarLogs() {
         .catch(err => console.error(err));
 }
 
-/* ===================== SISTEMA DE DASHBOARDS ===================== */
-let graficaActual   = null;
-let indiceDash      = 0;
-
-const tableros = [
-    { titulo: 'ACTIVOS POR CATEGORÍA', renderizar: renderizarDonut       },
-    { titulo: 'CONTADORES',            renderizar: renderizarContadores  },
-    { titulo: 'POR UBICACIÓN',         renderizar: renderizarUbicaciones }
-];
-
-function destruirGrafica() {
-    if (graficaActual) { graficaActual.destroy(); graficaActual = null; }
-}
-
-function alternarCanvas(mostrar) {
-    document.getElementById('chartCategorias').style.display = mostrar ? 'block' : 'none';
-    document.getElementById('counterDash').style.display     = mostrar ? 'none'  : 'flex';
-}
-
-function cambiarTablero(indice) {
-    indiceDash = (indice + tableros.length) % tableros.length;
-    document.getElementById('dashLabel').textContent = tableros[indiceDash].titulo;
-    destruirGrafica();
-    tableros[indiceDash].renderizar();
-}
+/* ===================== GRÁFICA DONA (panel izquierdo) ===================== */
+let graficaDona = null;
 
 function renderizarDonut() {
-    alternarCanvas(true);
+    document.getElementById('chartCategorias').style.display = 'block';
     fetch('../servicios/sistema.php?tipo=categorias')
         .then(r => r.json())
         .then(datos => {
-            graficaActual = new Chart(document.getElementById('chartCategorias'), {
+            if (graficaDona) graficaDona.destroy();
+            graficaDona = new Chart(document.getElementById('chartCategorias'), {
                 type: 'doughnut',
                 data: {
                     labels: datos.map(d => d.categoria),
@@ -385,50 +362,4 @@ function renderizarDonut() {
         }).catch(() => {});
 }
 
-function renderizarContadores() {
-    alternarCanvas(false);
-    fetch('../servicios/sistema.php?tipo=stats')
-        .then(r => r.json())
-        .then(datos => {
-            animarContador('cntActivos',   datos.activos   || 0, 1000);
-            if (document.getElementById('cntUsuarios')) {
-                animarContador('cntUsuarios',  datos.usuarios  || 0, 1000);
-            }
-            animarContador('cntPrestamos', datos.prestamos || 0, 1000);
-        }).catch(() => {});
-}
-
-function renderizarUbicaciones() {
-    alternarCanvas(true);
-    fetch('../servicios/sistema.php?tipo=ubicaciones')
-        .then(r => r.json())
-        .then(datos => {
-            if (!datos.length) { alternarCanvas(false); return; }
-            graficaActual = new Chart(document.getElementById('chartCategorias'), {
-                type: 'bar',
-                data: {
-                    labels: datos.map(d => d.ubicacion),
-                    datasets: [{ data: datos.map(d => d.total),
-                        backgroundColor: VERDES,
-                        borderWidth: 0, borderRadius: 6 }]
-                },
-                options: {
-                    indexAxis: 'y',
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: { callbacks: { label: ctx => ` ${ctx.parsed.x} usuarios` } }
-                    },
-                    scales: {
-                        x: { ticks: { color: '#fff', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.1)' } },
-                        y: { ticks: { color: '#fff', font: { size: 9 }, maxRotation: 0 }, grid: { display: false } }
-                    },
-                    animation: { duration: 800 }
-                }
-            });
-        }).catch(() => {});
-}
-
-document.getElementById('dashPrev').addEventListener('click', () => cambiarTablero(indiceDash - 1));
-document.getElementById('dashNext').addEventListener('click', () => cambiarTablero(indiceDash + 1));
-
-cambiarTablero(0);
+renderizarDonut();

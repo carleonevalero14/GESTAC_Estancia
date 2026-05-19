@@ -64,10 +64,6 @@ body {
     margin: 0;
     letter-spacing: 0.5px;
     text-transform: uppercase;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 140px;
 }
 
 /* ── Navegación de dashboards ── */

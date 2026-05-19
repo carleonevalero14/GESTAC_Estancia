@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../recursos/css/componentes.css">
     <link rel="stylesheet" href="../recursos/css/menu.css">
     <link rel="stylesheet" href="../recursos/css/metricas.css">
+    <link rel="stylesheet" href="../recursos/css/solicitudes.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 
@@ -301,9 +302,66 @@
         </div>
     </div>
 
+    <!-- ========== SOLICITUDES: botón, panel y modal resolución ========== -->
+    <button id="btnSolicitudes" style="bottom:70px;" title="Solicitudes de equipo">
+        📋 Solicitudes <span id="badgePendientes" class="badge-contador"></span>
+    </button>
+
+    <div id="overlaySolicitudes"></div>
+    <div id="panelSolicitudes">
+        <div class="panel-sol-header">
+            <h2>📋 Solicitudes de equipo</h2>
+            <button id="cerrarSolicitudes">✕</button>
+        </div>
+        <div class="panel-sol-cuerpo">
+            <div id="filtrosSol" class="filtros-sol">
+                <button class="filtro-btn activo" data-filtro="todas">Todas</button>
+                <button class="filtro-btn" data-filtro="pendiente">🟡 Pendientes</button>
+                <button class="filtro-btn" data-filtro="aprobada">🟢 Aprobadas</button>
+                <button class="filtro-btn" data-filtro="rechazada">🔴 Rechazadas</button>
+            </div>
+            <div style="overflow-x:auto;">
+                <table class="tabla-sol">
+                    <thead>
+                        <tr>
+                            <th>Solicitante</th>
+                            <th>Categoría</th>
+                            <th>Motivo</th>
+                            <th>Estado</th>
+                            <th>Fecha</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpTablaSol">
+                        <tr><td colspan="6" style="text-align:center;color:#999;padding:20px;">Cargando...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mini modal: aprobar o rechazar solicitud -->
+    <div id="modalResolucion" class="modal">
+        <div class="modal-contenido" style="width:420px;max-width:95%;">
+            <h2 id="resolTitulo">Resolver solicitud</h2>
+            <div class="formulario-cuadricula">
+                <div class="ancho-completo">
+                    <label>Comentario (opcional)</label>
+                    <textarea id="resolComentario" placeholder="Agrega un comentario para el solicitante..."></textarea>
+                </div>
+            </div>
+            <div id="msgResolucion" style="text-align:center;font-weight:700;font-size:0.9em;min-height:1.4em;margin-top:10px;"></div>
+            <div class="formulario-botones">
+                <button type="button" id="cancelarResolucion">Cancelar</button>
+                <button type="button" id="confirmarResolucion">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
     <script src="../recursos/js/peticiones.js?v=2"></script>
     <script src="../recursos/js/utilidades.js?v=2"></script>
     <script src="../recursos/js/menu.js?v=2"></script>
     <script src="../recursos/js/metricas.js?v=2"></script>
+    <script src="../recursos/js/solicitudes.js?v=4"></script>
 </body>
 </html>

@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../recursos/css/base.css">
     <link rel="stylesheet" href="../recursos/css/componentes.css">
     <link rel="stylesheet" href="../recursos/css/menu.css">
+    <link rel="stylesheet" href="../recursos/css/solicitudes.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         /* Modal de aviso (solo usuario) */
@@ -251,8 +252,60 @@
         </div>
     </div>
 
+    <!-- ========== SOLICITUDES: botón y panel ========== -->
+    <button id="btnSolicitudes" title="Solicitudes de equipo">📋 Solicitudes</button>
+
+    <div id="overlaySolicitudes"></div>
+    <div id="panelSolicitudes">
+        <div class="panel-sol-header">
+            <h2>📋 Solicitudes de equipo</h2>
+            <button id="cerrarSolicitudes">✕</button>
+        </div>
+        <div class="panel-sol-cuerpo">
+            <!-- Formulario nueva solicitud -->
+            <p class="sol-seccion-titulo">Nueva solicitud</p>
+            <form id="formNuevaSolicitud" class="form-sol">
+                <div>
+                    <label for="solCategoria">Categoría del equipo</label>
+                    <select id="solCategoria" name="categoria">
+                        <option value="">Seleccionar...</option>
+                        <option value="Laptop">Laptop</option>
+                        <option value="PC">PC</option>
+                        <option value="All in one">All in one</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="solMotivo">Motivo de la solicitud</label>
+                    <textarea id="solMotivo" name="motivo" placeholder="Describe por qué necesitas el equipo..."></textarea>
+                </div>
+                <button type="submit" class="btn-enviar-sol">Enviar solicitud</button>
+                <p id="msgNuevaSolicitud" class="msg-sol"></p>
+            </form>
+
+            <!-- Mis solicitudes -->
+            <p class="sol-seccion-titulo">Mis solicitudes</p>
+            <div style="overflow-x:auto;">
+                <table class="tabla-sol">
+                    <thead>
+                        <tr>
+                            <th>Categoría</th>
+                            <th>Motivo</th>
+                            <th>Estado</th>
+                            <th>Fecha</th>
+                            <th>Comentario</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpoMisSol">
+                        <tr><td colspan="5" style="text-align:center;color:#999;padding:16px;">—</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
     <script src="../recursos/js/peticiones.js"></script>
     <script src="../recursos/js/utilidades.js"></script>
     <script src="../recursos/js/menu.js"></script>
+    <script src="../recursos/js/solicitudes.js?v=4"></script>
 </body>
 </html>

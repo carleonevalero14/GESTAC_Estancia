@@ -1,3 +1,17 @@
+<?php
+require_once __DIR__ . '/../configuracion/sesion.php';
+
+// Si ya hay una sesión activa, no se muestra el login.
+if (haySesion()) {
+    header('Location: ' . (esAdmin() ? 'menu_admin.php' : 'menu_user.php'));
+    exit;
+}
+
+// Aviso cuando el usuario llega aquí por una sesión expirada o cerrada.
+$avisoSesion = isset($_GET['expirada'])
+    ? '<p class="mensaje-error-login">⚠️ Tu sesión finalizó. Inicia sesión de nuevo.</p>'
+    : '';
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -22,7 +36,7 @@
 
                 <h1>INICIAR SESIÓN</h1>
 
-                <div id="mensajeError"></div>
+                <div id="mensajeError"><?php echo $avisoSesion; ?></div>
 
                 <form id="formularioLogin">
                     <label for="campoUsuario">USUARIO</label>
@@ -34,7 +48,7 @@
                     <button type="submit" class="boton-login">ENTRAR</button>
                 </form>
 
-                <p class="enlace-contrasena"><a href="cambiar_contraseña.html">¿Has olvidado tu contraseña?</a></p>
+                <p class="enlace-contrasena"><a href="cambiar_contraseña.php">¿Has olvidado tu contraseña?</a></p>
             </div>
         </div>
     </div>
@@ -54,7 +68,7 @@
         .then(r => r.json())
         .then(datos => {
             if (datos.exito) {
-                window.location.href = datos.rol === 'admin' ? 'menu_admin.html' : 'menu_user.html';
+                window.location.href = datos.rol === 'admin' ? 'menu_admin.php' : 'menu_user.php';
             } else {
                 divError.innerHTML = `<p class="mensaje-error-login">${datos.mensaje}</p>`;
             }

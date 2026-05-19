@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../configuracion/sesion.php'; requerirSesion('admin'); ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>

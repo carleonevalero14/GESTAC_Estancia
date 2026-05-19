@@ -1,6 +1,8 @@
 <?php
+require_once __DIR__ . '/../configuracion/sesion.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../configuracion/base_datos.php';
+requerirSesionApi();
 
 use Dompdf\Dompdf;
 

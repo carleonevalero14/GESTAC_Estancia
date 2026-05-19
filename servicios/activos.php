@@ -1,5 +1,7 @@
 <?php
+require_once __DIR__ . '/../configuracion/sesion.php';
 require_once __DIR__ . '/../configuracion/base_datos.php';
+requerirSesionApi();
 
 $accion = $_GET['accion'] ?? '';
 $metodo = $_SERVER['REQUEST_METHOD'];
@@ -27,6 +29,12 @@ header('Content-Type: application/json; charset=utf-8');
 
 try {
     $pdo = obtenerConexion();
+
+    // Crear, importar o modificar activos es exclusivo de administradores.
+    if ($metodo === 'POST' && !esAdmin()) {
+        echo json_encode(['exito' => false, 'mensaje' => 'Acción restringida a administradores']);
+        exit;
+    }
 
     // ===================== IMPORTACIÓN MASIVA (JSON) =====================
     $datosJson = json_decode(file_get_contents('php://input'), true);

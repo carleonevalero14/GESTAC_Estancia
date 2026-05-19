@@ -1,5 +1,7 @@
 <?php
+require_once __DIR__ . '/../configuracion/sesion.php';
 require_once __DIR__ . '/../configuracion/base_datos.php';
+requerirSesionApi();
 header('Content-Type: application/json; charset=utf-8');
 
 $tipo = $_GET['tipo'] ?? '';
@@ -104,6 +106,12 @@ try {
              FROM logs ORDER BY fecha DESC LIMIT 100"
         );
         echo json_encode($stmt->fetchAll());
+        exit;
+    }
+
+    // Las operaciones de escritura (POST) son exclusivas de administradores.
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && !esAdmin()) {
+        echo json_encode(['exito' => false, 'mensaje' => 'Acción restringida a administradores']);
         exit;
     }
 

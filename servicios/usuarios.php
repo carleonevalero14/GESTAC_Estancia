@@ -1,5 +1,7 @@
 <?php
+require_once __DIR__ . '/../configuracion/sesion.php';
 require_once __DIR__ . '/../configuracion/base_datos.php';
+requerirSesionApi();
 
 $accion = $_GET['accion'] ?? '';
 $metodo = $_SERVER['REQUEST_METHOD'];
@@ -30,6 +32,10 @@ try {
 
     // ===================== ACTUALIZAR USUARIO (POST) =====================
     if ($metodo === 'POST') {
+        if (!esAdmin()) {
+            echo json_encode(['exito' => false, 'mensaje' => 'Acción restringida a administradores']);
+            exit;
+        }
         $nomina    = $_POST['nomina']    ?? '';
         $nombre    = $_POST['nombre']    ?? '';
         $ubicacion = $_POST['ubicacion'] ?? '';

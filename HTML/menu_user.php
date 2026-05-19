@@ -1,41 +1,54 @@
+<?php require_once __DIR__ . '/../configuracion/sesion.php'; requerirSesion(); ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menú Principal — GESTAC Admin</title>
+    <title>Menú Principal — GESTAC</title>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../recursos/css/base.css">
     <link rel="stylesheet" href="../recursos/css/componentes.css">
     <link rel="stylesheet" href="../recursos/css/menu.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        /* Modal de aviso (solo usuario) */
+        #modalAviso {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            justify-content: center;
+            align-items: center;
+        }
+        .contenido-aviso {
+            background: #fff;
+            padding: 25px 30px;
+            width: 330px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+            animation: emerger 0.2s ease-out;
+        }
+        @keyframes emerger {
+            0%   { transform: scale(0.7); opacity: 0; }
+            100% { transform: scale(1);   opacity: 1; }
+        }
+        .boton-aviso {
+            margin-top: 12px;
+            padding: 10px 20px;
+            border: none;
+            background: #007eff;
+            color: #fff;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .boton-aviso:hover { background: #005fcc; }
+    </style>
 </head>
 
 <body style="background-image: url('../recursos/imagenes/fondo.png'); background-repeat: no-repeat; background-size: cover; background-position: center;">
-
-    <!-- ===================== MODAL LOGS ===================== -->
-    <div id="modalLogs" class="modal">
-        <div class="modal-contenido modal-logs">
-            <h2>Historial de Cambios (Logs)</h2>
-            <div class="contenedor-logs">
-                <table id="tablaLogs">
-                    <thead>
-                        <tr>
-                            <th>Fecha</th>
-                            <th>Tipo</th>
-                            <th>Acción</th>
-                            <th>Registro</th>
-                            <th>Descripción</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-            <div class="formulario-botones">
-                <button id="cerrarLogs">Cerrar</button>
-            </div>
-        </div>
-    </div>
 
     <div class="contenedor-menu">
         <div class="panel-izquierdo">
@@ -46,10 +59,6 @@
                     <div class="tarjeta-contador">
                         <span class="numero-contador" id="cntActivos">0</span>
                         <span class="etiqueta-contador">Activos</span>
-                    </div>
-                    <div class="tarjeta-contador">
-                        <span class="numero-contador" id="cntUsuarios">0</span>
-                        <span class="etiqueta-contador">Usuarios</span>
                     </div>
                     <div class="tarjeta-contador">
                         <span class="numero-contador" id="cntPrestamos">0</span>
@@ -72,8 +81,8 @@
                     <span class="texto-modulo">ACTIVOS</span>
                     <div class="submenu submenu-izquierdo">
                         <a href="#" id="btnNuevoActivo">NUEVO ACTIVO</a>
-                        <a href="modificar_activo.html">MODIFICAR ACTIVO</a>
-                        <a href="ver_activo.html">VER ACTIVO</a>
+                        <a href="#" class="bloqueado">MODIFICAR ACTIVO</a>
+                        <a href="ver_activo.php">VER ACTIVO</a>
                     </div>
                 </div>
 
@@ -83,19 +92,19 @@
                     <span class="texto-modulo">ASIGNAR</span>
                     <div class="submenu submenu-derecho">
                         <a href="#" id="btnAsignarActivo">ASIGNAR ACTIVOS</a>
-                        <a href="modificar_asignado.html">MODIFICAR ASIGNADO</a>
-                        <a href="ver_asignado.html">VER USUARIO</a>
+                        <a href="#" class="bloqueado">MODIFICAR ASIGNADO</a>
+                        <a href="ver_asignado.php">VER USUARIO</a>
                     </div>
                 </div>
 
                 <!-- INVENTARIO -->
-                <a href="inventario.html" class="tarjeta-modulo">
+                <a href="inventario.php" class="tarjeta-modulo">
                     <img src="../recursos/imagenes/perifericos.png" alt="Periféricos" class="imagen-modulo">
                     <span class="texto-modulo">INVENTARIO PERIFÉRICOS</span>
                 </a>
 
                 <!-- PRÉSTAMOS -->
-                <a href="prestamo.html" class="tarjeta-modulo">
+                <a href="prestamo.php" class="tarjeta-modulo">
                     <img src="../recursos/imagenes/prestamos.png" alt="Préstamos" class="imagen-modulo">
                     <span class="texto-modulo">ESPECIALES PRÉSTAMOS</span>
                 </a>
@@ -106,18 +115,19 @@
     <!-- ================= CONFIGURACIONES ================= -->
     <a href="#" class="icono-config" id="configIcon" title="Configuraciones">⚙️</a>
     <div class="menu-config" id="configMenu">
-        <div class="tiene-submenu">
-            <span id="usuariosMenu">Usuarios ▸</span>
-            <div class="submenu-config" id="submenuUsuarios">
-                <a href="#" id="btnVerUsuarios">Ver Usuarios</a>
-                <a href="#" id="btnAgregarUsuario">Agregar Usuario</a>
-            </div>
-        </div>
-        <a id="btnLogs" href="#">Logs</a>
-        <a href="login.html">Cerrar Sesión</a>
+        <a href="../servicios/logout.php">Cerrar Sesión</a>
     </div>
 
-    <div class="leyenda-usuario">Usuario: <span id="user-type">ADMIN</span></div>
+    <div class="leyenda-usuario">Usuario: <span id="user-type"><?php echo htmlspecialchars(usuarioActual(), ENT_QUOTES, 'UTF-8'); ?></span></div>
+
+    <!-- ========== MODAL AVISO (acceso restringido) ========== -->
+    <div id="modalAviso">
+        <div class="contenido-aviso">
+            <h3>Acceso restringido</h3>
+            <p>No cuentas con usuario administrador</p>
+            <button id="cerrarAviso" class="boton-aviso">Entendido</button>
+        </div>
+    </div>
 
     <!-- ========== MODAL NUEVO ACTIVO ========== -->
     <div id="modalNuevoActivo" class="modal">
@@ -152,10 +162,7 @@
                         <label>Número de Lote</label>
                         <input type="text" name="lote" placeholder="Ej. LOTE-2025-01">
                     </div>
-                    <div>
-                        <label>Nombre del producto</label>
-                        <input type="text" name="nombre">
-                    </div>
+                    <div><label>Nombre del producto</label><input type="text" name="nombre"></div>
                     <div class="ancho-completo">
                         <label>Descripción del activo</label>
                         <textarea name="descripcion"></textarea>
@@ -204,29 +211,20 @@
         </div>
     </div>
 
-    <!-- ========== MODAL AGREGAR USUARIO ========== -->
+    <!-- ========== MODAL AGREGAR USUARIO (placeholder para que el JS no falle) ========== -->
     <div id="modalAgregarUsuario" class="modal">
         <div class="modal-contenido">
             <h2>Agregar Usuario</h2>
-            <form id="formAgregarUsuario" method="POST">
+            <form id="formAgregarUsuario">
                 <div class="formulario-cuadricula">
-                    <div class="ancho-completo">
-                        <label>Correo</label>
-                        <input type="email" name="correo" placeholder="usuario@ejemplo.com" required>
-                    </div>
-                    <div class="ancho-completo">
-                        <label>Contraseña</label>
-                        <input type="password" name="password" placeholder="Contraseña" required>
-                    </div>
+                    <div class="ancho-completo"><label>Correo</label><input type="email" name="correo" placeholder="usuario@ejemplo.com"></div>
+                    <div class="ancho-completo"><label>Contraseña</label><input type="password" name="password" placeholder="Contraseña"></div>
                     <div class="ancho-completo">
                         <label>Rol</label>
                         <div class="selector-personalizado" id="selectorRol">
                             <input type="hidden" name="rol">
                             <span class="opcion-seleccionada">Seleccionar</span>
-                            <div class="lista-opciones">
-                                <div>admin</div>
-                                <div>user</div>
-                            </div>
+                            <div class="lista-opciones"><div>admin</div><div>user</div></div>
                         </div>
                     </div>
                 </div>
@@ -239,38 +237,16 @@
         </div>
     </div>
 
-    <!-- ========== MODAL VER USUARIOS ========== -->
+    <!-- ========== MODAL VER USUARIOS (placeholder) ========== -->
     <div id="modalVerUsuarios" class="modal">
         <div class="modal-contenido">
             <h2>Ver Usuarios</h2>
             <table id="tablaUsuarios">
-                <thead>
-                    <tr>
-                        <th>Usuario</th>
-                        <th>Rol</th>
-                        <th>Cambiar Rol</th>
-                        <th>Acción</th>
-                    </tr>
-                </thead>
+                <thead><tr><th>Usuario</th><th>Rol</th><th>Cambiar Rol</th><th>Acción</th></tr></thead>
                 <tbody></tbody>
             </table>
             <div class="formulario-botones">
                 <button type="button" id="cerrarVerUsuarios">Cerrar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ========== MODAL CAMBIO DE ROL ========== -->
-    <div id="modalCambioRol" class="modal">
-        <div class="modal-contenido">
-            <h3>Confirmar Cambio de Rol</h3>
-            <input type="hidden" id="cambioRolUsername">
-            <input type="hidden" id="cambioRolNuevoRol">
-            <input type="password" id="passwordAdminInput" placeholder="Contraseña de administrador">
-            <div id="mensajeCambioRol" style="margin-bottom:10px;"></div>
-            <div class="formulario-botones">
-                <button type="button" id="cancelarCambioRol">Cancelar</button>
-                <button type="button" id="confirmarCambioRol">Confirmar</button>
             </div>
         </div>
     </div>

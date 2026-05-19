@@ -31,7 +31,7 @@
 
                     <button type="submit" class="boton-login">ENTRAR</button>
                 </form>
-                <p class="enlace-volver-login"><a href="login.html">Iniciar sesión</a></p>
+                <p class="enlace-volver-login"><a href="login.php">Iniciar sesión</a></p>
             </div>
 
             <!-- Paso 2: cambiar contraseña -->
@@ -94,7 +94,7 @@
         .then(datos => {
             if (datos.exito) {
                 divMensaje.innerHTML = `<p style="color:green;">${datos.mensaje}<br>Redirigiendo al login...</p>`;
-                setTimeout(() => { window.location.href = 'login.html'; }, 2000);
+                setTimeout(() => { window.location.href = 'login.php'; }, 2000);
             } else {
                 divMensaje.innerHTML = `<p class="mensaje-error-login">${datos.mensaje}</p>`;
             }

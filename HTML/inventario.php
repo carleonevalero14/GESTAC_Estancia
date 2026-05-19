@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../configuracion/sesion.php'; requerirSesion(); ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>

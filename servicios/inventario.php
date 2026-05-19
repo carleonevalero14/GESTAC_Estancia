@@ -1,5 +1,7 @@
 <?php
+require_once __DIR__ . '/../configuracion/sesion.php';
 require_once __DIR__ . '/../configuracion/base_datos.php';
+requerirSesionApi();
 header('Content-Type: application/json; charset=utf-8');
 
 $metodo = $_SERVER['REQUEST_METHOD'];
@@ -47,6 +49,12 @@ try {
             "SELECT `id`, `nombre`, `S/N` AS sn FROM `inventario_perifericos` ORDER BY `nombre` ASC"
         );
         echo json_encode(['exito' => true, 'datos' => $stmt->fetchAll()], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
+    // Insertar o eliminar periféricos es exclusivo de administradores.
+    if ($metodo === 'POST' && !esAdmin()) {
+        echo json_encode(['exito' => false, 'mensaje' => 'Acción restringida a administradores'], JSON_UNESCAPED_UNICODE);
         exit;
     }
 

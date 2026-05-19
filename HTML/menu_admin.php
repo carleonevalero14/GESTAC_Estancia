@@ -58,6 +58,8 @@
                         <a href="#" id="btnNuevoActivo">NUEVO ACTIVO</a>
                         <a href="modificar_activo.php">MODIFICAR ACTIVO</a>
                         <a href="ver_activo.php">VER ACTIVO</a>
+                        <a href="etiquetas_qr.php">ETIQUETAS QR</a>
+                        <a href="escanear.php">ESCANEAR QR</a>
                     </div>
                 </div>
 

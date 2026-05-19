@@ -38,7 +38,8 @@ function renderizarTablaActivos(activos) {
     cuerpo.innerHTML = '';
 
     const modoEdicion = !!document.getElementById('modalEditarActivo');
-    const cols = modoEdicion ? 7 : 6;
+    const modoQR      = !!document.getElementById('qr-modal');
+    const cols = modoEdicion ? 7 : (modoQR ? 7 : 6);
 
     if (!activos.length) {
         cuerpo.innerHTML = `<tr><td colspan="${cols}" style="text-align:center;padding:20px">No se encontraron activos</td></tr>`;
@@ -56,6 +57,7 @@ function renderizarTablaActivos(activos) {
             <td class="col-caracteristicas">${activo.ram || 'N/A'} / ${activo.almacenamiento || 'N/A'}</td>
             <td class="col-lote">${activo.lote || 'N/A'}</td>
             ${modoEdicion ? '<td class="col-editar"><button class="boton-editar" title="Editar"></button></td>' : ''}
+            ${modoQR ? `<td class="col-qr"><button class="btn-qr" data-id="${activo.id_producto}" data-nombre="${activo.nombre || ''}">QR</button></td>` : ''}
         `;
         if (modoEdicion) {
             fila.querySelector('.boton-editar').addEventListener('click', () => abrirFormularioEdicion(activo));
@@ -147,7 +149,10 @@ function inicializarImportacion() {
 
 /* ── Init ── */
 document.addEventListener('DOMContentLoaded', () => {
-    cargarActivos();
+    cargarActivos().then(() => {
+        const id = new URLSearchParams(window.location.search).get('id');
+        if (id) aplicarFiltrosActivos();
+    });
 
     const filtroCat  = document.getElementById('tipoFilter');
     const campoBusq  = document.getElementById('searchInput');

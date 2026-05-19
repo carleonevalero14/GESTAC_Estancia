@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="../recursos/css/base.css">
     <link rel="stylesheet" href="../recursos/css/componentes.css">
     <link rel="stylesheet" href="../recursos/css/paginas.css">
+    <link rel="stylesheet" href="../recursos/css/qr.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body style="background-image: url('../recursos/imagenes/fondo.png'); background-repeat: no-repeat; background-size: cover; background-position: center;">
 
@@ -45,6 +47,7 @@
                             <th class="col-procesador">Procesador</th>
                             <th class="col-caracteristicas">Características</th>
                             <th class="col-lote">Lote</th>
+                            <th class="col-qr">QR</th>
                         </tr>
                     </thead>
                     <tbody id="assets-data">
@@ -59,7 +62,56 @@
         </div>
     </div>
 
+    <!-- Modal QR individual -->
+    <div id="qr-modal" class="modal">
+        <div class="modal-contenido" style="width:280px; text-align:center;">
+            <h3 id="qr-modal-titulo" style="margin-bottom:4px;"></h3>
+            <p id="qr-modal-id" style="font-size:0.8em; margin:0 0 12px; font-family:monospace;"></p>
+            <div id="qr-modal-codigo" style="display:flex; justify-content:center; margin-bottom:16px;"></div>
+            <div class="formulario-botones" style="justify-content:center;">
+                <button id="cerrar-qr-modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
     <script src="../recursos/js/peticiones.js"></script>
+    <script src="../recursos/js/qr.js"></script>
     <script src="../recursos/js/activos.js"></script>
+    <script>
+        /* Pre-filtrar por ?id= al cargar la página */
+        document.addEventListener('DOMContentLoaded', () => {
+            const id = new URLSearchParams(window.location.search).get('id');
+            if (id) {
+                const campo = document.getElementById('searchInput');
+                if (campo) { campo.value = id; }
+            }
+        });
+
+        /* Modal QR */
+        document.getElementById('assets-data')?.addEventListener('click', e => {
+            const btn = e.target.closest('.btn-qr');
+            if (!btn) return;
+            const id     = btn.dataset.id;
+            const nombre = btn.dataset.nombre;
+            document.getElementById('qr-modal-titulo').textContent = nombre || id;
+            document.getElementById('qr-modal-id').textContent = id;
+            const contenedorQR = document.getElementById('qr-modal-codigo');
+            generarQR(contenedorQR, urlBaseActivo() + '?id=' + id, 150);
+            document.getElementById('qr-modal').classList.add('abierto');
+        });
+
+        document.getElementById('cerrar-qr-modal')?.addEventListener('click', () => {
+            document.getElementById('qr-modal').classList.remove('abierto');
+            document.getElementById('qr-modal-codigo').innerHTML = '';
+        });
+
+        window.addEventListener('click', e => {
+            const modal = document.getElementById('qr-modal');
+            if (e.target === modal) {
+                modal.classList.remove('abierto');
+                document.getElementById('qr-modal-codigo').innerHTML = '';
+            }
+        });
+    </script>
 </body>
 </html>

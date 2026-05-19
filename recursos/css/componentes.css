@@ -35,19 +35,22 @@
     background: var(--verde-700);
     color: var(--verde-300);
     border: 2px solid var(--verde-300);
-    padding: 6px 12px;
-    border-radius: 6px;
+    padding: 0 16px;
+    height: 44px;
+    border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
     font-family: var(--fuente-base);
     transition: background-color 0.2s;
+    white-space: nowrap;
 }
 .btn-exportar:hover { background: var(--verde-500); }
 
 /* ── Botón principal genérico ── */
 .btn-principal {
-    padding: 11px 18px;
-    border-radius: 12px;
+    padding: 0 18px;
+    height: 44px;
+    border-radius: 8px;
     border: 0;
     font-weight: 800;
     cursor: pointer;
@@ -56,6 +59,7 @@
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
     transition: transform 0.12s ease, background 0.2s ease;
     font-family: var(--fuente-base);
+    white-space: nowrap;
 }
 .btn-principal:hover  { background: var(--verde-boton-hover); transform: translateY(-1px); }
 .btn-principal:active { transform: scale(0.98); }
@@ -233,10 +237,11 @@
     gap: 10px;
     background: #fff;
     color: #333;
-    padding: 10px 12px;
-    border-radius: 12px;
+    padding: 0 12px;
+    height: 44px;
+    border-radius: 8px;
     border: 1px solid #e7efe7;
-    min-width: min(360px, 72vw);
+    min-width: 200px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08) inset;
 }
 .caja-busqueda input {
@@ -267,8 +272,7 @@
 
 /* ── Dropdown (select con flecha custom) ── */
 .desplegable {
-    width: 30%;
-    max-width: 200px;
+    width: 130px;
     height: 44px;
     background: #fff;
     border-radius: 4px;

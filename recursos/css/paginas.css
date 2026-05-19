@@ -51,10 +51,11 @@ body {
 
 /* ── Encabezado de lista (título + controles) ── */
 .encabezado-lista {
-    display: grid;
-    grid-template-columns: 1fr auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
     gap: 12px;
-    align-items: end;
     margin-bottom: 12px;
 }
 .titulo-lista {
@@ -67,7 +68,7 @@ body {
 .barra-controles {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     flex-wrap: wrap;
 }
 

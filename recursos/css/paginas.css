@@ -53,15 +53,15 @@ body {
 .encabezado-lista {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
     align-items: center;
     gap: 12px;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
 }
 .titulo-lista {
     margin: 0;
     font-size: clamp(16px, 2vw, 22px);
     font-weight: 800;
+    flex-shrink: 0;
 }
 
 /* ── Barra de controles ── */
@@ -69,7 +69,14 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    flex: 1;
+    justify-content: flex-end;
+    min-width: 0;
+}
+.barra-controles .caja-busqueda {
+    flex: 1 1 140px;
+    min-width: 0;
 }
 
 /* ── Tarjeta de formulario ── */

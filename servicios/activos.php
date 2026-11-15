@@ -1,4 +1,5 @@
 <?php
+ob_start();
 require_once __DIR__ . '/../configuracion/sesion.php';
 require_once __DIR__ . '/../configuracion/base_datos.php';
 requerirSesionApi();
@@ -25,6 +26,7 @@ if ($metodo === 'GET' && $accion === 'exportar_excel') {
     exit;
 }
 
+ob_clean();
 header('Content-Type: application/json; charset=utf-8');
 
 try {
@@ -79,7 +81,7 @@ try {
     }
 
     // ===================== ACTUALIZAR ACTIVO (POST FORM) =====================
-    if ($metodo === 'POST' && isset($_POST['id_producto'])) {
+    if ($metodo === 'POST' && isset($_POST['id_producto']) && !is_array($_POST['id_producto'])) {
         $id             = $_POST['id_producto']    ?? '';
         $nombre         = $_POST['nombre']         ?? '';
         $categoria      = $_POST['categoria']      ?? '';

@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ver Activos Asignados — GESTAC</title>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+    <script>(function(){var t=localStorage.getItem('gestac_tema');if(t&&t!=='original')document.documentElement.classList.add('tema-'+t);}());</script>
     <link rel="stylesheet" href="../recursos/css/base.css">
+    <link rel="stylesheet" href="../recursos/css/temas.css">
     <link rel="stylesheet" href="../recursos/css/componentes.css">
     <link rel="stylesheet" href="../recursos/css/paginas.css">
 </head>
@@ -37,9 +39,17 @@
 
             <div class="contenedor-tabla">
                 <table class="tabla-activos" role="grid">
+                    <colgroup>
+                        <col style="width:11%">
+                        <col style="width:22%">
+                        <col style="width:18%">
+                        <col style="width:27%">
+                        <col style="width:12%">
+                        <col style="width:10%">
+                    </colgroup>
                     <thead>
                         <tr>
-                            <th scope="col">Nomina</th>
+                            <th scope="col">Nómina</th>
                             <th scope="col">Nombre</th>
                             <th scope="col">Ubicación</th>
                             <th scope="col">Activo asignado</th>

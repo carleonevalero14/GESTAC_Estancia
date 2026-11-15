@@ -216,16 +216,22 @@ body {
 }
 .submenu a:hover { background: var(--verde-boton-hover); color: #fff; }
 
-/* ── Icono de configuración ── */
-.icono-config {
+/* ── Wrapper fijo del engranaje (posiciona ícono + badge) ── */
+#wrapperEngranaje {
     position: fixed;
     top: 20px;
     right: 20px;
+    z-index: 100;
+}
+
+/* ── Icono de configuración ── */
+.icono-config {
     font-size: 3em;
     color: var(--verde-boton);
     text-decoration: none;
     transition: all 0.3s ease;
-    z-index: 100;
+    display: block;
+    line-height: 1;
 }
 .icono-config:hover { color: var(--verde-boton-hover); transform: scale(1.25) rotate(15deg); }
 

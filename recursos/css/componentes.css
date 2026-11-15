@@ -307,6 +307,55 @@
     pointer-events: none;
 }
 
+/* ── Selector de rol en tabla de usuarios ── */
+.selector-rol {
+    width: 100%;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    font-size: 0.88rem;
+    cursor: pointer;
+    font-family: var(--fuente-base);
+}
+.selector-rol option { color: #333; background: #fff; }
+
+/* ── Botón confirmar cambio de rol ── */
+.boton-confirmar-rol {
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    background: var(--verde-boton);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-family: var(--fuente-base);
+    white-space: nowrap;
+}
+.boton-confirmar-rol:hover { background: var(--verde-boton-hover); }
+
+/* ── Contenedor de logs (modal historial) ── */
+.contenedor-logs {
+    max-height: 400px;
+    overflow: auto;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(0, 0, 0, 0.06);
+    margin-bottom: 12px;
+}
+.contenedor-logs::-webkit-scrollbar { width: 10px; height: 10px; }
+.contenedor-logs::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.28); border-radius: 10px; }
+
+/* ── Botón "Carta" en tabla de asignados (reduce altura para no inflar filas) ── */
+.btn-carta {
+    height: 34px !important;
+    padding: 0 14px !important;
+    font-size: 0.88rem;
+}
+
 /* ── Modal responsive ── */
 @media (max-width: 750px) {
     .modal-contenido { width: 100%; padding: 20px; }

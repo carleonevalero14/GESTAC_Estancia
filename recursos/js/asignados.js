@@ -82,15 +82,15 @@ function renderizarTabla(usuarios) {
             fila.querySelector('.boton-editar').addEventListener('click', () => abrirFormulario(usuario));
         } else {
             fila.innerHTML = `
-                <td>${usuario.nomina || 'N/A'}</td>
+                <td>${usuario.nomina ?? 'N/A'}</td>
                 <td><strong>${usuario.nombre || 'N/A'}</strong></td>
                 <td>${usuario.ubicacion || 'N/A'}</td>
                 <td>${usuario.activo || 'N/A'}</td>
                 <td>${usuario.fecha || 'N/A'}</td>
                 <td>
                     <button class="btn-exportar btn-carta"
-                        data-nomina="${(usuario.nomina || '').replace(/"/g,'&quot;')}"
-                        data-activo="${(usuario.activo || '').replace(/"/g,'&quot;')}">
+                        data-nomina="${String(usuario.nomina ?? '').replace(/"/g,'&quot;')}"
+                        data-activo="${String(usuario.activo ?? '').replace(/"/g,'&quot;')}">
                         Carta
                     </button>
                 </td>

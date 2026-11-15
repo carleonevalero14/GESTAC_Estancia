@@ -5,12 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menú Principal — GESTAC Admin</title>
+    <script>(function(){var t=localStorage.getItem('gestac_tema');if(t&&t!=='original')document.documentElement.classList.add('tema-'+t);}());</script>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../recursos/css/base.css">
+    <link rel="stylesheet" href="../recursos/css/temas.css">
     <link rel="stylesheet" href="../recursos/css/componentes.css">
     <link rel="stylesheet" href="../recursos/css/menu.css">
     <link rel="stylesheet" href="../recursos/css/metricas.css">
     <link rel="stylesheet" href="../recursos/css/solicitudes.css">
+    <link rel="stylesheet" href="../recursos/css/notificaciones.css">
+    <link rel="stylesheet" href="../recursos/css/cmdb.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 
@@ -21,7 +25,14 @@
         <div class="modal-contenido modal-logs">
             <h2>Historial de Cambios (Logs)</h2>
             <div class="contenedor-logs">
-                <table id="tablaLogs">
+                <table id="tablaLogs" class="tabla-activos">
+                    <colgroup>
+                        <col style="width:14%">
+                        <col style="width:12%">
+                        <col style="width:12%">
+                        <col style="width:10%">
+                        <col style="width:52%">
+                    </colgroup>
                     <thead>
                         <tr>
                             <th>Fecha</th>
@@ -40,7 +51,7 @@
         </div>
     </div>
 
-    <div class="contenedor-menu">
+    <div class="contenedor-menu con-cmdb">
         <div class="panel-izquierdo">
             <h1 id="GESTAC">GESTAC</h1>
             <div class="contenedor-dona">
@@ -84,7 +95,13 @@
                 <!-- PRÉSTAMOS -->
                 <a href="prestamo.php" class="tarjeta-modulo">
                     <img src="../recursos/imagenes/prestamos.png" alt="Préstamos" class="imagen-modulo">
-                    <span class="texto-modulo">ESPECIALES PRÉSTAMOS</span>
+                    <span class="texto-modulo">PRESTAMOS PERIFERICOS</span>
+                </a>
+
+                <!-- CMDB / MONITOREO -->
+                <a href="cmdb.php" class="tarjeta-modulo tarjeta-modulo-ancha">
+                    <img src="../recursos/imagenes/cmdb.png" alt="CMDB" class="imagen-modulo">
+                    <span class="texto-modulo">CMDB / MONITOREO</span>
                 </a>
             </div>
         </div>
@@ -92,7 +109,7 @@
 
     <!-- ================= CONFIGURACIONES ================= -->
     <!-- Botón de métricas -->
-    <button id="btnMetricas">📊 Métricas</button>
+    <button id="btnMetricas"> Métricas</button>
 
     <!-- Overlay y panel lateral de métricas -->
     <div id="overlayMetricas"></div>
@@ -131,8 +148,34 @@
         </div>
     </div>
 
-    <a href="#" class="icono-config" id="configIcon" title="Configuraciones">⚙️</a>
+    <!-- ========== NOTIFICACIONES (panel) ========== -->
+    <div id="panelNotif">
+        <div class="notif-header">
+            <span> Notificaciones</span>
+            <div class="notif-header-acciones">
+                <button id="marcarTodasLeidas">Marcar todas</button>
+                <button id="cerrarPanelNotif">✕</button>
+            </div>
+        </div>
+        <div id="listaNotif">
+            <p style="text-align:center;color:#999;padding:16px;font-size:0.85em;">—</p>
+        </div>
+    </div>
+
+    <div id="wrapperEngranaje">
+        <a href="#" class="icono-config" id="configIcon" title="Configuraciones">⚙️</a>
+        <span id="badgeNotif" class="badge-notif"></span>
+    </div>
     <div class="menu-config" id="configMenu">
+        <a href="#" id="iconoNotif"> Notificaciones</a>
+        <div class="tiene-submenu">
+            <span> Tema ▸</span>
+            <div class="submenu-config">
+                <a href="#" data-tema="claro"> Claro</a>
+                <a href="#" data-tema="original"> Original</a>
+                <a href="#" data-tema="oscuro"> Oscuro</a>
+            </div>
+        </div>
         <div class="tiene-submenu">
             <span id="usuariosMenu">Usuarios ▸</span>
             <div class="submenu-config" id="submenuUsuarios">
@@ -140,7 +183,7 @@
                 <a href="#" id="btnAgregarUsuario">Agregar Usuario</a>
             </div>
         </div>
-        <a id="btnLogs" href="#">Logs</a>
+        
         <a href="../servicios/logout.php">Cerrar Sesión</a>
     </div>
 
@@ -203,16 +246,16 @@
 
     <!-- ========== MODAL ASIGNAR ACTIVO ========== -->
     <div id="modalAsignarActivo" class="modal">
-        <div class="modal-contenido">
+        <div class="modal-contenido" style="max-width:540px;">
             <h2>Asignar Activo</h2>
             <form id="formAsignarActivo" method="POST">
                 <div class="formulario-cuadricula">
-                    <div class="autocompletar">
+                    <div class="autocompletar ancho-completo">
                         <label>Usuario</label>
                         <input type="text" id="usuario" name="usuario" placeholder="Buscar usuario..." autocomplete="off">
                         <div class="items-autocompletar" id="usuarioList"></div>
                     </div>
-                    <div class="autocompletar">
+                    <div class="autocompletar ancho-completo">
                         <label>Activo</label>
                         <input type="text" id="activo" name="activo" placeholder="Buscar activo..." autocomplete="off">
                         <div class="items-autocompletar" id="activoList"></div>
@@ -268,19 +311,27 @@
 
     <!-- ========== MODAL VER USUARIOS ========== -->
     <div id="modalVerUsuarios" class="modal">
-        <div class="modal-contenido">
+        <div class="modal-contenido" style="max-width:680px;">
             <h2>Ver Usuarios</h2>
-            <table id="tablaUsuarios">
-                <thead>
-                    <tr>
-                        <th>Usuario</th>
-                        <th>Rol</th>
-                        <th>Cambiar Rol</th>
-                        <th>Acción</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+            <div class="contenedor-tabla" style="max-height:340px;">
+                <table id="tablaUsuarios" class="tabla-activos">
+                    <colgroup>
+                        <col style="width:40%">
+                        <col style="width:16%">
+                        <col style="width:28%">
+                        <col style="width:16%">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Rol</th>
+                            <th>Cambiar Rol</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
             <div class="formulario-botones">
                 <button type="button" id="cerrarVerUsuarios">Cerrar</button>
             </div>
@@ -360,8 +411,10 @@
 
     <script src="../recursos/js/peticiones.js?v=2"></script>
     <script src="../recursos/js/utilidades.js?v=2"></script>
-    <script src="../recursos/js/menu.js?v=2"></script>
+    <script src="../recursos/js/menu.js?v=3"></script>
     <script src="../recursos/js/metricas.js?v=2"></script>
     <script src="../recursos/js/solicitudes.js?v=4"></script>
+    <script src="../recursos/js/notificaciones.js?v=6"></script>
+    <script src="../recursos/js/temas.js?v=1"></script>
 </body>
 </html>

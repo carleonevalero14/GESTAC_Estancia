@@ -1,7 +1,9 @@
 <?php
+ob_start();
 require_once __DIR__ . '/../configuracion/sesion.php';
 require_once __DIR__ . '/../configuracion/base_datos.php';
 requerirSesionApi();
+ob_clean();
 header('Content-Type: application/json; charset=utf-8');
 
 $accion = $_GET['accion'] ?? ($_POST['accion'] ?? '');
@@ -58,6 +60,17 @@ try {
         $idNuevo = $pdo->lastInsertId();
         registrarLog($pdo, 'solicitudes', 'INSERT', $idNuevo,
             "Solicitud de $categoria por $solicitante");
+        // Notificar a todos los admins
+        $admins   = $pdo->query("SELECT username FROM users WHERE rol = 'admin'")->fetchAll();
+        $stmtNotif = $pdo->prepare(
+            "INSERT INTO notificaciones (destinatario, tipo, mensaje) VALUES (?, 'solicitud', ?)"
+        );
+        foreach ($admins as $admin) {
+            $stmtNotif->execute([
+                $admin['username'],
+                "📋 $solicitante solicitó un equipo: $categoria"
+            ]);
+        }
         echo json_encode(['exito' => true, 'mensaje' => 'Solicitud enviada correctamente']);
         exit;
     }
@@ -93,6 +106,19 @@ try {
         if ($stmt->rowCount() === 0) {
             echo json_encode(['exito' => false, 'mensaje' => 'La solicitud ya fue resuelta']);
             exit;
+        }
+        // Notificar al solicitante
+        $stmtInfo = $pdo->prepare("SELECT solicitante, categoria FROM solicitudes WHERE id = ?");
+        $stmtInfo->execute([$id]);
+        $infoSol = $stmtInfo->fetch();
+        if ($infoSol) {
+            $emoji = $estado === 'aprobada' ? '✅' : '❌';
+            $pdo->prepare(
+                "INSERT INTO notificaciones (destinatario, tipo, mensaje) VALUES (?, 'resolucion', ?)"
+            )->execute([
+                $infoSol['solicitante'],
+                "$emoji Tu solicitud de {$infoSol['categoria']} fue $estado"
+            ]);
         }
         registrarLog($pdo, 'solicitudes', 'UPDATE', $id,
             "Solicitud $estado por " . usuarioActual());

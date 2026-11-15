@@ -1,7 +1,9 @@
 <?php
+ob_start();
 require_once __DIR__ . '/../configuracion/sesion.php';
 require_once __DIR__ . '/../configuracion/base_datos.php';
 requerirSesionApi();
+ob_clean();
 header('Content-Type: application/json; charset=utf-8');
 
 $tipo = $_GET['tipo'] ?? '';
@@ -58,6 +60,21 @@ try {
             $prestamos = (int) $pdo->query("SELECT COUNT(*) FROM prestamos")->fetchColumn();
         }
         echo json_encode(['activos' => $activos, 'usuarios' => $usuarios, 'prestamos' => $prestamos]);
+        exit;
+    }
+
+    // ===================== CONTADORES DEL CMDB =====================
+    if ($tipo === 'cmdb_stats') {
+        $datos  = ['equipos' => 0, 'en_linea' => 0, 'con_alertas' => 0];
+        $existe = $pdo->query("SHOW TABLES LIKE 'cmdb_equipos'")->fetch();
+        if ($existe) {
+            $datos['equipos']  = (int) $pdo->query("SELECT COUNT(*) FROM cmdb_equipos WHERE estado <> 'baja'")->fetchColumn();
+            $datos['en_linea'] = (int) $pdo->query("SELECT COUNT(*) FROM cmdb_equipos WHERE estado = 'online'")->fetchColumn();
+            $datos['con_alertas'] = (int) $pdo->query(
+                "SELECT COUNT(DISTINCT id_equipo) FROM cmdb_alertas WHERE estado = 'abierta'"
+            )->fetchColumn();
+        }
+        echo json_encode($datos);
         exit;
     }
 

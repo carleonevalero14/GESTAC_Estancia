@@ -313,24 +313,33 @@ if (cerrarLogs) {
 }
 
 function cargarLogs() {
-    fetch('../servicios/sistema.php?tipo=logs')
+    const tbody = document.querySelector('#tablaLogs tbody');
+    tbody.innerHTML = '<tr><td colspan="5" class="celda-vacia">Cargando...</td></tr>';
+
+    fetch('../servicios/sistema.php?tipo=logs', { cache: 'no-store' })
         .then(r => r.json())
         .then(datos => {
-            const tbody = document.querySelector('#tablaLogs tbody');
             tbody.innerHTML = '';
+            if (!Array.isArray(datos) || datos.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="celda-vacia">Sin registros para mostrar</td></tr>';
+                return;
+            }
             datos.forEach(log => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td>${log.fecha}</td>
-                    <td>${log.tabla}</td>
-                    <td>${log.accion}</td>
-                    <td>${log.registro_id}</td>
-                    <td>${log.descripcion}</td>
+                    <td>${log.fecha ?? ''}</td>
+                    <td>${log.tabla ?? ''}</td>
+                    <td>${log.accion ?? ''}</td>
+                    <td>${log.registro_id ?? ''}</td>
+                    <td>${log.descripcion ?? ''}</td>
                 `;
                 tbody.appendChild(tr);
             });
         })
-        .catch(err => console.error(err));
+        .catch(err => {
+            console.error(err);
+            tbody.innerHTML = '<tr><td colspan="5" class="celda-vacia">Error al cargar los logs</td></tr>';
+        });
 }
 
 /* ===================== GRÁFICA DONA (panel izquierdo) ===================== */

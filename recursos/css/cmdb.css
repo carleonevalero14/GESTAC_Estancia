@@ -11,6 +11,9 @@
 .contenedor-menu.con-cmdb .cuadricula-modulos { height: auto; grid-template-rows: 215px 215px 96px; }
 .tarjeta-modulo-ancha { grid-column: 1 / -1; flex-direction: row; gap: 16px; padding: 12px 30px; }
 .tarjeta-modulo-ancha .imagen-modulo { width: 48px !important; height: 48px !important; margin-bottom: 0; }
+/* Dos tarjetas compactas en la fila inferior (CMDB y Mantenimiento) */
+.tarjeta-modulo-ancha.tarjeta-modulo-mitad { grid-column: auto; padding: 12px 18px; }
+.icono-emoji { display: inline-flex; align-items: center; justify-content: center; font-size: 34px; line-height: 1; }
 
 /* ── Barra de almacenamiento (tabla y detalle) ── */
 .barra-almacen {

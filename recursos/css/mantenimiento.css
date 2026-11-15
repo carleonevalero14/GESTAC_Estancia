@@ -1,0 +1,178 @@
+/* =====================================================
+   mantenimiento.css — Módulo de mantenimiento e incidencias
+   Requiere: base.css, componentes.css y paginas.css antes.
+   Solo agrega pestañas, KPIs, paneles y chips propios; el resto
+   sale de componentes existentes (.tabla-activos, .modal, .chip...).
+   Colores reutilizados de solicitudes.css y componentes.css.
+   ===================================================== */
+
+/* ── Pestañas ── */
+.mt-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    padding-bottom: 10px;
+}
+.mt-tab {
+    padding: 8px 18px;
+    border-radius: 20px;
+    border: 2px solid var(--verde-300);
+    background: transparent;
+    color: var(--verde-300);
+    font-weight: 700;
+    font-size: 0.9rem;
+    font-family: var(--fuente-base);
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+.mt-tab:hover { background: rgba(255, 255, 255, 0.1); }
+.mt-tab.activa { background: var(--verde-300); color: #1f3b1f; }
+
+/* ── Chips de estado, prioridad y vencimiento (extienden .chip) ── */
+.chip.e-abierta    { color: #4d1f1f; background: #ffd4d4; }
+.chip.e-en_proceso { color: #854d0e; background: #fef9c3; }
+.chip.e-resuelta   { color: #103310; background: #cfead0; }
+.chip.p-critica    { color: #fff;    background: #9b2c2c; }
+.chip.p-alta       { color: #854d0e; background: #fbbf24; }
+.chip.p-media      { color: #854d0e; background: #fef9c3; }
+.chip.p-baja       { color: #103310; background: #cfead0; }
+.chip.v-vencido    { color: #fff;    background: #9b2c2c; }
+.chip.v-proximo    { color: #854d0e; background: #fef9c3; }
+.chip.v-programado { color: #333;    background: #d9d9d9; }
+.chip.v-realizado  { color: #103310; background: #cfead0; }
+.mt-sla { margin-left: 4px; cursor: help; }
+
+/* ── Botones compactos de fila ── */
+.mt-acciones { display: flex; gap: 6px; }
+.btn-eliminar.btn-carta { background: #9b2c2c; }
+
+/* ── Detalle de la incidencia ── */
+.mt-resumen-titulo { margin: 0 0 8px; font-size: 1.1rem; font-weight: 800; color: #fff; }
+.mt-resumen-chips  { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.mt-datos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 6px 18px;
+    margin: 0 0 12px;
+}
+.mt-datos div { font-size: 0.85rem; }
+.mt-datos dt { color: rgba(255, 255, 255, 0.65); font-weight: 600; display: inline; }
+.mt-datos dd { margin: 0; display: inline; color: #fff; }
+.mt-bloque {
+    background: rgba(0, 0, 0, 0.12);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+    color: #fff;
+}
+.mt-bloque small { display: block; color: rgba(255, 255, 255, 0.6); font-weight: 700; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.4px; }
+.mt-sub {
+    margin: 14px 0 8px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--verde-200);
+}
+
+/* ── Línea de tiempo del historial ── */
+.mt-timeline {
+    padding-left: 18px;
+    border-left: 2px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+.mt-evento { position: relative; font-size: 0.85rem; color: #fff; }
+.mt-evento::before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    top: 4px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--verde-300);
+    border: 2px solid var(--verde-800);
+}
+.mt-evento-fecha { font-size: 0.75rem; color: rgba(255, 255, 255, 0.55); }
+
+/* ── Mensajes de formularios ── */
+.mt-msg { text-align: center; font-weight: 700; min-height: 1.3em; margin-top: 8px; color: #fff; }
+.mt-msg.error { color: #ffdede; }
+
+/* ── KPIs de indicadores ── */
+.mt-kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+}
+.mt-kpi {
+    background: rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-left: 4px solid var(--verde-400);
+    border-radius: 10px;
+    padding: 12px 16px;
+}
+.mt-kpi.alerta { border-left-color: #9b2c2c; }
+.mt-kpi-numero {
+    font-size: 1.7rem;
+    font-weight: 800;
+    line-height: 1.1;
+    color: #fff;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+.mt-kpi-numero small { font-size: 0.55em; font-weight: 700; opacity: 0.75; margin-left: 3px; }
+.mt-kpi-etiqueta {
+    margin-top: 4px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+/* ── Paneles de gráficas ── */
+.mt-graficas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+}
+.mt-panel {
+    background: rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    padding: 14px 16px;
+    min-width: 0;
+}
+.mt-panel-ancho { grid-column: 1 / -1; }
+.mt-panel h3 {
+    margin: 0 0 10px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--verde-200);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    padding-bottom: 8px;
+}
+.mt-lienzo { position: relative; height: 240px; }
+.mt-lienzo-bajo { height: 210px; }
+.mt-vacio { margin: 0; padding: 60px 0; text-align: center; color: #dfefdf; }
+.mt-nota { font-size: 0.8rem; color: rgba(255, 255, 255, 0.7); line-height: 1.5; margin: 6px 2px 0; }
+
+/* ── Responsive ── */
+@media (max-width: 860px) {
+    .mt-graficas { grid-template-columns: 1fr; }
+}
+
+.oculto { display: none !important; }

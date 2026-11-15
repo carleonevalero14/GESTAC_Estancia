@@ -70,6 +70,7 @@
                         <a href="#" id="btnNuevoActivo">NUEVO ACTIVO</a>
                         <a href="modificar_activo.php">MODIFICAR ACTIVO</a>
                         <a href="ver_activo.php">VER ACTIVO</a>
+                        <a href="sistemas_operativos.php">SISTEMAS OPERATIVOS</a>
                         <a href="etiquetas_qr.php">ETIQUETAS QR</a>
                         <a href="escanear.php">ESCANEAR QR</a>
                     </div>
@@ -99,9 +100,15 @@
                 </a>
 
                 <!-- CMDB / MONITOREO -->
-                <a href="cmdb.php" class="tarjeta-modulo tarjeta-modulo-ancha">
+                <a href="cmdb.php" class="tarjeta-modulo tarjeta-modulo-ancha tarjeta-modulo-mitad">
                     <img src="../recursos/imagenes/cmdb.png" alt="CMDB" class="imagen-modulo">
                     <span class="texto-modulo">CMDB / MONITOREO</span>
+                </a>
+
+                <!-- MANTENIMIENTO E INCIDENCIAS (independiente del CMDB) -->
+                <a href="mantenimiento.php" class="tarjeta-modulo tarjeta-modulo-ancha tarjeta-modulo-mitad">
+                    <span class="imagen-modulo icono-emoji" aria-hidden="true">🛠️</span>
+                    <span class="texto-modulo">MANTENIMIENTO E INCIDENCIAS</span>
                 </a>
             </div>
         </div>

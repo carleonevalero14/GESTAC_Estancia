@@ -1,0 +1,83 @@
+/* =====================================================
+   sistemas_operativos.css — Dashboard de sistemas operativos
+   Requiere: base.css, componentes.css y paginas.css antes.
+   Solo agrega KPIs y paneles de gráficas; el resto sale de
+   componentes existentes (.chip, .tabla-activos, .modal...).
+   ===================================================== */
+
+/* ── KPIs ── */
+.so-kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+}
+.so-kpi {
+    background: rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-left: 4px solid var(--verde-400);
+    border-radius: 10px;
+    padding: 12px 16px;
+}
+.so-kpi.alerta { border-left-color: #9b2c2c; }
+.so-kpi-numero {
+    font-size: 1.8rem;
+    font-weight: 800;
+    line-height: 1.1;
+    color: #fff;
+    font-variant-numeric: tabular-nums;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.so-kpi-numero.texto { font-size: 1.15rem; padding: 6px 0; }
+.so-kpi-etiqueta {
+    margin-top: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+/* ── Paneles de gráficas ── */
+.so-graficas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 18px;
+}
+.so-panel {
+    background: rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    padding: 14px 16px;
+    min-width: 0;
+}
+.so-panel-ancho { grid-column: 1 / -1; }
+.so-panel h3 {
+    margin: 0 0 10px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--verde-200);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    padding-bottom: 8px;
+}
+.so-lienzo { position: relative; height: 260px; }
+.so-lienzo-bajo { height: 220px; }
+.so-vacio { margin: 0; padding: 60px 0; text-align: center; color: #dfefdf; }
+
+/* ── Chips de soporte (extiende .chip de componentes.css) ── */
+.chip.sin-soporte { color: #4d1f1f; background: #ffd4d4; }
+.chip.neutro      { color: #333;    background: #d9d9d9; }
+
+/* ── Mensaje del modal ── */
+.so-msg { text-align: center; font-weight: 700; min-height: 1.3em; margin-top: 10px; }
+.so-msg.error { color: #ffdede; }
+
+/* ── Responsive ── */
+@media (max-width: 860px) {
+    .so-graficas { grid-template-columns: 1fr; }
+}
